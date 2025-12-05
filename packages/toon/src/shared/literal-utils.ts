@@ -9,6 +9,7 @@ export function isBooleanOrNullLiteral(token: string): boolean {
  *
  * @remarks
  * Rejects numbers with leading zeros (except `"0"` itself or decimals like `"0.5"`).
+ * Also rejects negative numbers with leading zeros (e.g., `-05`).
  */
 export function isNumericLiteral(token: string): boolean {
   if (!token)
@@ -16,6 +17,11 @@ export function isNumericLiteral(token: string): boolean {
 
   // Must not have leading zeros (except for `"0"` itself or decimals like `"0.5"`)
   if (token.length > 1 && token[0] === '0' && token[1] !== '.') {
+    return false
+  }
+
+  // Must not have leading zeros after minus sign (e.g., `-05` is invalid, but `-0` and `-0.5` are valid)
+  if (token.length > 2 && token[0] === '-' && token[1] === '0' && token[2] !== '.') {
     return false
   }
 

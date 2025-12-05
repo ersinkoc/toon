@@ -841,7 +841,7 @@ async function* decodeListItemAsync(
       // Fields at depth +1: parse them as an object
       yield { type: 'startObject' }
 
-      while (!cursor.atEnd()) {
+      while (!(await cursor.atEnd())) {
         const fieldLine = await cursor.peek()
         if (!fieldLine || fieldLine.depth < followDepth) {
           break
